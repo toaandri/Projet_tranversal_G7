@@ -1,0 +1,228 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
+-- Client: localhost
+-- Généré le: ven 20 Juin 2025 à 11:10
+-- Version du serveur: 5.6.12-log
+-- Version de PHP: 5.4.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `portail_recommandations`
+--
+CREATE DATABASE IF NOT EXISTS `portail_recommandations` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `portail_recommandations`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `admin`
+--
+
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id_admin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mdp_admin` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_admin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Contenu de la table `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `mdp_admin`) VALUES
+('ADM001', 'admin123');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cours`
+--
+
+CREATE TABLE IF NOT EXISTS `cours` (
+  `id_cours` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom_cours` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `filiere` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `semestre` int(11) NOT NULL,
+  `id_enseignant` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `horaire` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Non spécifié',
+  PRIMARY KEY (`id_cours`),
+  KEY `id_enseignant` (`id_enseignant`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Contenu de la table `cours`
+--
+
+INSERT INTO `cours` (`id_cours`, `nom_cours`, `filiere`, `semestre`, `id_enseignant`, `horaire`) VALUES
+('CRS001', 'Introduction à la programmation', 'Informatique', 1, 'ENS001', 'Lundis, 7h-11h'),
+('CRS002', 'Mathématiques appliquées', 'Informatique', 2, 'ENS002', 'Mardis, 9h-12h');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `enseignant`
+--
+
+CREATE TABLE IF NOT EXISTS `enseignant` (
+  `id_enseignant` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom_enseignant` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mdp_enseignant` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_enseignant`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Contenu de la table `enseignant`
+--
+
+INSERT INTO `enseignant` (`id_enseignant`, `nom_enseignant`, `mdp_enseignant`) VALUES
+('ENS001', 'Professeur Dupont', 'prof123'),
+('ENS002', 'Professeur Rakoto', 'prof456');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `etudiant`
+--
+
+CREATE TABLE IF NOT EXISTS `etudiant` (
+  `id_etudiant` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mdp_etudiant` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_etudiant`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Contenu de la table `etudiant`
+--
+
+INSERT INTO `etudiant` (`id_etudiant`, `mdp_etudiant`) VALUES
+('ETU001', 'etudiant123'),
+('ETU002', 'etudiant456');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `evaluation`
+--
+
+CREATE TABLE IF NOT EXISTS `evaluation` (
+  `id_evaluation` int(11) NOT NULL AUTO_INCREMENT,
+  `id_enseignant` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_cours` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` int(11) NOT NULL,
+  `commentaire` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date_evaluation` date NOT NULL,
+  `validee` tinyint(1) NOT NULL DEFAULT '0',
+  `signale` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_evaluation`),
+  KEY `id_enseignant` (`id_enseignant`),
+  KEY `id_cours` (`id_cours`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=7 ;
+
+--
+-- Contenu de la table `evaluation`
+--
+
+INSERT INTO `evaluation` (`id_evaluation`, `id_enseignant`, `id_cours`, `note`, `commentaire`, `date_evaluation`, `validee`, `signale`) VALUES
+(1, 'ENS001', 'CRS001', 4, 'Cours clair et pratique', '2025-07-08', 1, 0),
+(2, 'ENS001', 'CRS001', 5, 'Professeur très pédagogue', '2025-07-08', 1, 0),
+(3, 'ENS002', 'CRS002', 3, 'Cours intéressant mais exigeant', '2025-07-08', 1, 0),
+(4, 'ENS001', 'CRS001', 5, 'mmmm', '2025-07-08', 1, 0),
+(5, 'ENS002', 'CRS002', 5, 'merde', '2025-07-08', 1, 0),
+(6, 'ENS001', 'CRS001', 4, 'wefgerg', '2025-07-11', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reunions`
+--
+
+CREATE TABLE IF NOT EXISTS `reunions` (
+  `id_reunion` int(11) NOT NULL AUTO_INCREMENT,
+  `id_enseignant` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_rp` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_reunion` date NOT NULL,
+  `sujet` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_reunion`),
+  KEY `id_enseignant` (`id_enseignant`),
+  KEY `id_rp` (`id_rp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `rp`
+--
+
+CREATE TABLE IF NOT EXISTS `rp` (
+  `id_rp` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom_rp` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mdp_rp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_rp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Contenu de la table `rp`
+--
+
+INSERT INTO `rp` (`id_rp`, `nom_rp`, `mdp_rp`) VALUES
+('RP001', 'Responsable Rabe', 'rp123');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `suivi_cours`
+--
+
+CREATE TABLE IF NOT EXISTS `suivi_cours` (
+  `id_suivi` int(11) NOT NULL AUTO_INCREMENT,
+  `id_etudiant` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_cours` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_suivi` date NOT NULL,
+  PRIMARY KEY (`id_suivi`),
+  KEY `id_etudiant` (`id_etudiant`),
+  KEY `id_cours` (`id_cours`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `cours`
+--
+ALTER TABLE `cours`
+  ADD CONSTRAINT `cours_ibfk_1` FOREIGN KEY (`id_enseignant`) REFERENCES `enseignant` (`id_enseignant`);
+
+--
+-- Contraintes pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD CONSTRAINT `evaluation_ibfk_1` FOREIGN KEY (`id_enseignant`) REFERENCES `enseignant` (`id_enseignant`),
+  ADD CONSTRAINT `evaluation_ibfk_2` FOREIGN KEY (`id_cours`) REFERENCES `cours` (`id_cours`);
+
+--
+-- Contraintes pour la table `reunions`
+--
+ALTER TABLE `reunions`
+  ADD CONSTRAINT `reunions_ibfk_1` FOREIGN KEY (`id_enseignant`) REFERENCES `enseignant` (`id_enseignant`),
+  ADD CONSTRAINT `reunions_ibfk_2` FOREIGN KEY (`id_rp`) REFERENCES `rp` (`id_rp`);
+
+--
+-- Contraintes pour la table `suivi_cours`
+--
+ALTER TABLE `suivi_cours`
+  ADD CONSTRAINT `suivi_cours_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
+  ADD CONSTRAINT `suivi_cours_ibfk_2` FOREIGN KEY (`id_cours`) REFERENCES `cours` (`id_cours`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
