@@ -7,3 +7,7 @@ Our first task was to create the HTML code to structure the website and the PHP 
 we've been a little lost by pushing everything into the repository but we managed to use it
 
 The PHP code is complete, within our knowledge, even though there are some details to review. Our next step is to create the remaining HTML code and finally assemble it to present to our project manager.
+
+July 11, 2025
+
+we almost finished our project, the PHP code is set and working, the only thing remaining to do is to add the php into html code and to structure the file to commit into the gi
